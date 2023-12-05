@@ -25,11 +25,18 @@ def plotar_histograma(axe_index, data, titulo, color):
 # Função para plotar distribuição normal sobreposta
 def plotar_normal(medias_amostrais, media_real, desvio_padrao_real):
     x = np.linspace(min(medias_amostrais), max(medias_amostrais), 100)
-    y_normal = norm.pdf(x, loc=media_real, scale=desvio_padrao_real)
+    # x = np.linspace(norm.ppf(1), norm.ppf(100), 100)
+    # y_normal = norm.pdf(x, loc=media_real, scale=desvio_padrao_real)
+    rv = norm(loc = media_real, scale = desvio_padrao_real)
+    y_normal = rv.pdf(x)
 
-    axes[1].plot(x, y_normal, 'k--', linewidth=2, label='Distribuição Normal')
-    plt.legend()
+    ax3 = axes[1].twinx()
 
+    ax3.plot(x, y_normal, 'k--', linewidth=2, label='Distribuição Normal')
+    
+    ax3.set_ylabel('Distribuição Normal', color='k')
+    ax3.tick_params(axis='y', labelcolor='k')
+    
 # Função principal
 def main():
     st.title("Teorema Central do Limite")
@@ -81,6 +88,9 @@ def main():
 
     plotar_normal(medias_amostrais, media_real, desvio_padrao_real)
 
+    axes[1].legend()
+
+    plt.tight_layout()
     st.pyplot(fig)
 
 # Executar o programa principal
