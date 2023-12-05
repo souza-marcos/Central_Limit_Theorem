@@ -12,6 +12,8 @@ def gerar_amostras(tipo_distr, params, tam_amostra : int, num_amostras : int):
         return np.random.exponential(scale=params['lambda'], size=(num_amostras, tam_amostra))
     elif tipo_distr == 'Uniforme':
         return np.random.uniform(params['a'], params['b'], size=(num_amostras, tam_amostra))
+    elif tipo_distr == 'Poisson':
+        return np.random.poisson(params['lambda'], size=(num_amostras, tam_amostra))
 
 # Função para calcular médias amostrais
 def calcular_medias_amostrais(amostras):
@@ -42,21 +44,23 @@ def main():
     st.title("Teorema Central do Limite")
 
     # Escolher distribuição e parâmetros
-    tipo_distribuicao = st.sidebar.selectbox("Escolha a Distribuição", ["Binomial", "Exponencial", "Uniforme"])
+    tipo_distribuicao = st.sidebar.selectbox("Escolha a Distribuição", ["Binomial", "Exponencial", "Uniforme", "Poisson"])
     parametros = {}
 
+    st.sidebar.markdown(f"Parâmetros da Distribuição {tipo_distribuicao}")
+    
     if tipo_distribuicao == 'Binomial':
-        st.sidebar.markdown("Parâmetros da Distribuição Binomial")
         parametros['n'] = st.sidebar.slider("Número de tentativas (n)", min_value=5, max_value=50, value=20)
         parametros['p'] = st.sidebar.slider("Probabilidade de sucesso (p)", min_value=0.1, max_value=0.9, value=0.5)
     elif tipo_distribuicao == 'Exponencial':
-        st.sidebar.markdown("Parâmetros da Distribuição Exponencial")
         parametros['lambda'] = st.sidebar.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
     elif tipo_distribuicao == 'Uniforme':
-        st.sidebar.markdown("Parâmetros da Distribuição Uniforme")
         parametros['a'] = st.sidebar.slider("Limite inferior (a)", min_value=0, max_value=10, value=0)
         parametros['b'] = st.sidebar.slider("Limite superior (b)", min_value=10, max_value=20, value=10)
+    elif tipo_distribuicao == 'Poisson':
+        parametros['lambda'] = st.sidebar.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
 
+        
     tamanho_amostra = st.sidebar.slider("Tamanho da Amostra", min_value=5, max_value=100, value=30)
     num_amostras = st.sidebar.slider("Número de Amostras", min_value=1, max_value=1000, value=10)
 
@@ -87,8 +91,6 @@ def main():
     desvio_padrao_real = np.std(amostras) / np.sqrt(tamanho_amostra)
 
     plotar_normal(medias_amostrais, media_real, desvio_padrao_real)
-
-    axes[1].legend()
 
     plt.tight_layout()
     st.pyplot(fig)
