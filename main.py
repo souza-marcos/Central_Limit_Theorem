@@ -62,30 +62,30 @@ def main():
     st.divider()    
 
     # Escolher distribuição e parâmetros
-    tipo_distribuicao = st.selectbox("Escolha o tipo de distribuição:", ["Binomial", "Exponencial", "Uniforme", "Poisson"])
+    tipo_distribuicao = st.sidebar.selectbox("Escolha o tipo de distribuição:", ["Binomial", "Exponencial", "Uniforme", "Poisson"])
     parametros = {}
 
-    st.write("###")
+    st.sidebar.write("###")
 
-    st.write("Escolha os parâmetros da distribuição selecionada:")
+    st.sidebar.write("Escolha os parâmetros da distribuição selecionada:")
     
     if tipo_distribuicao == 'Binomial':
-        parametros['n'] = st.slider("Número de tentativas (n)", min_value=5, max_value=50, value=20)
-        parametros['p'] = st.slider("Probabilidade de sucesso (p)", min_value=0.01, max_value=0.9, value=0.5)
+        parametros['n'] = st.sidebar.slider("Número de tentativas (n)", min_value=5, max_value=50, value=20)
+        parametros['p'] = st.sidebar.slider("Probabilidade de sucesso (p)", min_value=0.01, max_value=0.9, value=0.5)
     elif tipo_distribuicao == 'Exponencial':
-        parametros['lambda'] = st.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
+        parametros['lambda'] = st.sidebar.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
     elif tipo_distribuicao == 'Uniforme':
-        parametros['a'] = st.slider("Limite inferior (a)", min_value=0, max_value=10, value=0)
-        parametros['b'] = st.slider("Limite superior (b)", min_value=10, max_value=20, value=10)
+        parametros['a'] = st.sidebar.slider("Limite inferior (a)", min_value=0, max_value=10, value=0)
+        parametros['b'] = st.sidebar.slider("Limite superior (b)", min_value=10, max_value=20, value=10)
     elif tipo_distribuicao == 'Poisson':
-        parametros['lambda'] = st.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
+        parametros['lambda'] = st.sidebar.slider("Parâmetro Lambda", min_value=0.1, max_value=5.0, value=1.0)
     
-    st.write("###")
+    st.sidebar.write("###")
 
-    st.write("Escolha os valores das amostras:")
+    st.sidebar.write("Escolha os valores das amostras:")
         
-    tamanho_amostra = st.slider("Tamanho da Amostra", min_value=5, max_value=100, value=30)
-    num_amostras = st.slider("Número de Amostras", min_value=1, max_value=1000, value=10)
+    tamanho_amostra = st.sidebar.slider("Tamanho da Amostra", min_value=5, max_value=100, value=30)
+    num_amostras = st.sidebar.slider("Número de Amostras", min_value=1, max_value=1000, value=10)
 
     # Gerar amostras
     amostras = gerar_amostras(tipo_distribuicao, parametros, tamanho_amostra, num_amostras)
